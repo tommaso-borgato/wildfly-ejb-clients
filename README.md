@@ -1,14 +1,29 @@
-# Traditional client with jboss-ejb-client.properties
+# WildFly EJB Clients
+This project demonstrates basically two flavours of WildFly EJB Clients:
+* the one using traditional JNDI approach (module EjbClientEAP7)
+* the one using the new JBoss EJB client APIs (module EjbClientEAP7-A)
 
-# Traditional client without jboss-ejb-client.properties
-The client might be configured by using the jboss-ejb-client.properties file or a programatic approach by using the PropertiesBasedEJBClientConfiguration.
+## EjbClientEAP7
+Traditional client with JNDI approach and jboss-ejb-client.properties.  
+The client can be configured by using the jboss-ejb-client.properties file.
+
+## EjbClientEAP7-A
+Client using the new JBoss EJB client APIs.
+
+## EjbClientEAP7-B
+Same as EjbClientEAP7 but specifying server location programmatically.
 
 # 3 Clustered WilfFly Nodes
+Commands to start a 3 nodes WildFly cluster:
+```
 ./bin/standalone.sh --server-config=standalone-ha.xml "-Dprogram.name=WildFly12 NODE 1" -Djboss.node.name=node1
 ./bin/standalone.sh --server-config=standalone-ha.xml "-Dprogram.name=WildFly12 NODE 2" -Djboss.node.name=node2 -Djboss.socket.binding.port-offset=100
 ./bin/standalone.sh --server-config=standalone-ha.xml "-Dprogram.name=WildFly12 NODE 3" -Djboss.node.name=node3 -Djboss.socket.binding.port-offset=200
+```
 
-## Server JNDI bindings
+## NOTES:
+### NOTE 1: Server JNDI bindings
+```
 JNDI bindings for session bean named 'SampleStatelessEjb' in deployment unit 'subdeployment "EjbServerJar.jar" of deployment "EjbServerEar.ear"':  
 	java:global/EjbServerEar/EjbServerJar/SampleStatelessEjb!it.tb.ejb.stateless.SampleStatelessEjbRemote
 	java:app/EjbServerJar/SampleStatelessEjb!it.tb.ejb.stateless.SampleStatelessEjbRemote
@@ -17,8 +32,10 @@ JNDI bindings for session bean named 'SampleStatelessEjb' in deployment unit 'su
 	java:global/EjbServerEar/EjbServerJar/SampleStatelessEjb
 	java:app/EjbServerJar/SampleStatelessEjb
 	java:module/SampleStatelessEjb
+```
 	
-## WildFly Java Command
+### NOTE 2: WildFly Java Command
+```
 "/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-5.b14.fc27.x86_64/bin/java" 
 -D"[Standalone]" -server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m 
 -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true 
@@ -29,4 +46,5 @@ JNDI bindings for session bean named 'SampleStatelessEjb' in deployment unit 'su
 org.jboss.as.standalone -Djboss.home.dir="/home/tborgato/projects/wildfly/dist/target/wildfly-node1" 
 -Djboss.server.base.dir="/home/tborgato/projects/wildfly/dist/target/wildfly-node1/standalone"  
 '--server-config=standalone-ha.xml'
+```
 
